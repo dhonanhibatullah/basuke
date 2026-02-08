@@ -7,7 +7,7 @@ import (
 )
 
 type Auth interface {
-	CreateAuth(ctx context.Context, userId int64, username string, passwordHash string, email *string, by int64) (id int64, err error)
+	CreateAuth(ctx context.Context, userId int64, username string, email string, passwordHash string, by int64) (id int64, err error)
 	ReadAuthByIdentifier(ctx context.Context, identifier string) (auth *domainmodel.Auth, err error)
 	ReadAuthById(ctx context.Context, id int64) (auth *domainmodel.Auth, err error)
 	UpdateAuth(ctx context.Context, id int64, username *string, email *string, by int64) (err error)

@@ -25,8 +25,8 @@ func (r *Repo) New(dx pgxdx.Pgxdx, sqr *squirrel.StatementBuilderType) portsoutr
 	}
 }
 
-func (r *Repo) CreateAuth(ctx context.Context, userId int64, username string, passwordHash string, email *string, by int64) (id int64, err error) {
-	query, args, err := r.queryCreateAuth(userId, username, passwordHash, email, by)
+func (r *Repo) CreateAuth(ctx context.Context, userId int64, username string, email string, passwordHash string, by int64) (id int64, err error) {
+	query, args, err := r.queryCreateAuth(userId, username, email, passwordHash, by)
 	if err != nil {
 		return 0, err
 	}

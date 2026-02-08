@@ -5,7 +5,7 @@ import (
 	domainmodel "github.com/dhonanhibatullah/basuke/internal/domain/model"
 )
 
-func (r *Repo) queryCreateAuth(userId int64, username string, passwordHash string, email *string, by int64) (string, []any, error) {
+func (r *Repo) queryCreateAuth(userId int64, username string, email string, passwordHash string, by int64) (string, []any, error) {
 	return r.sqr.
 		Insert("basuke_auths").
 		Columns(
@@ -98,14 +98,6 @@ func (r *Repo) queryUpdateAuth(id int64, username *string, email *string, by int
 	}
 
 	return qb.ToSql()
-}
-
-func (r *Repo) queryCheckAuthExists(id int64) (string, []any, error) {
-	return r.sqr.
-		Select("1").
-		From("basuke_auths").
-		Where(squirrel.Eq{"id": id}).
-		ToSql()
 }
 
 func (r *Repo) queryUpdateAuthPasswordHash(id int64, passwordHash string, by int64) (string, []any, error) {
