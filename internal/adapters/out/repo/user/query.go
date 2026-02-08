@@ -136,7 +136,7 @@ func (r *Repo) queryReadUserByAuthId(authId int64) (string, []any, error) {
 		ToSql()
 }
 
-func (r *Repo) queryUpdateUser(id int64, name *string, role *domainmodel.UserRole, bio *string, preferences *json.RawMessage, by int64) (string, []any, error) {
+func (r *Repo) queryUpdateUser(id int64, name *string, bio *string, preferences *json.RawMessage, by int64) (string, []any, error) {
 	qb := r.sqr.
 		Update("basuke_users").
 		Set("updated_by", by).
@@ -150,13 +150,6 @@ func (r *Repo) queryUpdateUser(id int64, name *string, role *domainmodel.UserRol
 		changeCond = append(changeCond, squirrel.Or{
 			squirrel.NotEq{"name": *name},
 			squirrel.Eq{"name": nil},
-		})
-	}
-	if role != nil {
-		qb = qb.Set("role", *role)
-		changeCond = append(changeCond, squirrel.Or{
-			squirrel.NotEq{"role": *role},
-			squirrel.Eq{"role": nil},
 		})
 	}
 	if bio != nil {
@@ -179,6 +172,16 @@ func (r *Repo) queryUpdateUser(id int64, name *string, role *domainmodel.UserRol
 	}
 
 	return qb.ToSql()
+}
+
+func (r *Repo) queryUpdateUserRole(id int64, role domainmodel.UserRole, by int64) (string, []any, error) {
+	return r.sqr.
+		Update("basuke_users").
+		Set("role", role).
+		Set("updated_at", squirrel.Expr("NOW()")).
+		Set("updated_by", by).
+		Where(squirrel.Eq{"id": id}).
+		ToSql()
 }
 
 func (r *Repo) queryUpdateUserStatus(id int64, status domainmodel.UserStatus, by int64) (string, []any, error) {

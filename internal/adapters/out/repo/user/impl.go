@@ -150,8 +150,25 @@ func (r *Repo) ReadUserByAuthId(ctx context.Context, authId int64) (user *domain
 	return
 }
 
-func (r *Repo) UpdateUser(ctx context.Context, id int64, name *string, role *domainmodel.UserRole, bio *string, preferences *json.RawMessage, by int64) (err error) {
-	query, args, err := r.queryUpdateUser(id, name, role, bio, preferences, by)
+func (r *Repo) UpdateUser(ctx context.Context, id int64, name *string, bio *string, preferences *json.RawMessage, by int64) (err error) {
+	query, args, err := r.queryUpdateUser(id, name, bio, preferences, by)
+	if err != nil {
+		return err
+	}
+
+	cmd, err := r.dx.Exec(ctx, query, args...)
+	if err != nil {
+		return r.scanErr(err)
+	}
+	if cmd.RowsAffected() == 0 {
+		return domainmodel.ErrNoChange
+	}
+
+	return
+}
+
+func (r *Repo) UpdateUserRole(ctx context.Context, id int64, role domainmodel.UserRole, by int64) (err error) {
+	query, args, err := r.queryUpdateUserRole(id, role, by)
 	if err != nil {
 		return err
 	}
