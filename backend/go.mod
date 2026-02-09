@@ -1,4 +1,4 @@
-module github.com/dhonanhibatullah/basuke
+module github.com/dhonanhibatullah/basuke/backend
 
 go 1.25.5
 
