@@ -15,38 +15,38 @@ type Pgxdx interface {
 	WithTx(ctx context.Context, fn func(context.Context) error) error
 }
 
-type PgxdxImpl struct {
+type dx struct {
 	pool *pgxpool.Pool
 }
 
 func NewPgxdx(pool *pgxpool.Pool) Pgxdx {
-	return &PgxdxImpl{
+	return &dx{
 		pool: pool,
 	}
 }
 
-func (p *PgxdxImpl) Exec(ctx context.Context, sql string, args ...any) (commandTag pgconn.CommandTag, err error) {
+func (p *dx) Exec(ctx context.Context, sql string, args ...any) (commandTag pgconn.CommandTag, err error) {
 	if tx := getTx(ctx); tx != nil {
 		return tx.Exec(ctx, sql, args...)
 	}
 	return p.pool.Exec(ctx, sql, args...)
 }
 
-func (p *PgxdxImpl) Query(ctx context.Context, sql string, args ...any) (rows pgx.Rows, err error) {
+func (p *dx) Query(ctx context.Context, sql string, args ...any) (rows pgx.Rows, err error) {
 	if tx := getTx(ctx); tx != nil {
 		return tx.Query(ctx, sql, args...)
 	}
 	return p.pool.Query(ctx, sql, args...)
 }
 
-func (p *PgxdxImpl) QueryRow(ctx context.Context, sql string, args ...any) (row pgx.Row) {
+func (p *dx) QueryRow(ctx context.Context, sql string, args ...any) (row pgx.Row) {
 	if tx := getTx(ctx); tx != nil {
 		return tx.QueryRow(ctx, sql, args...)
 	}
 	return p.pool.QueryRow(ctx, sql, args...)
 }
 
-func (p *PgxdxImpl) WithTx(ctx context.Context, fn func(context.Context) error) error {
+func (p *dx) WithTx(ctx context.Context, fn func(context.Context) error) error {
 	if tx := getTx(ctx); tx != nil {
 		return tx.WithTx(ctx, fn)
 	}
