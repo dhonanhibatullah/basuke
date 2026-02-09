@@ -32,7 +32,7 @@ CREATE INDEX idx_basuke_accounts_username_search ON basuke_accounts USING GIN (u
 
 CREATE INDEX idx_basuke_accounts_email_search ON basuke_accounts USING GIN (email gin_trgm_ops);
 
-CREATE INDEX idx_basuke_accounts_search ON basuke_accounts USING GIN (name gin_trgm_ops);
+CREATE INDEX idx_basuke_accounts_name_search ON basuke_accounts USING GIN (name gin_trgm_ops);
 
 CREATE INDEX idx_basuke_accounts_role ON basuke_accounts (role);
 
