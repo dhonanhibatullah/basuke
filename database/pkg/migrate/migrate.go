@@ -51,12 +51,10 @@ func Migrate(config *Config) error {
 	if err != nil {
 		return fmt.Errorf("failed to create database driver: %w", err)
 	}
-
-	sourceDriver, err := iofs.New(config.MigrationFiles, config.DBName)
+	sourceDriver, err := iofs.New(config.MigrationFiles, "sql")
 	if err != nil {
 		return fmt.Errorf("failed to create source driver: %w", err)
 	}
-
 	m, err := migrate.NewWithInstance("iofs", sourceDriver, "postgres", driver)
 	if err != nil {
 		return fmt.Errorf("failed to create migrate instance: %w", err)
