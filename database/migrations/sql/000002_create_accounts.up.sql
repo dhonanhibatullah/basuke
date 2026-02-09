@@ -22,10 +22,8 @@ CREATE TABLE basuke_accounts (
     bio VARCHAR(2048),
     preferences JSONB,
     last_login_at TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT REFERENCES basuke_accounts (id) ON DELETE SET NULL,
-    updated_at TIMESTAMPTZ,
-    updated_by BIGINT REFERENCES basuke_accounts (id) ON DELETE SET NULL
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
 );
 
 CREATE INDEX idx_basuke_accounts_username_search ON basuke_accounts USING GIN (username gin_trgm_ops);
