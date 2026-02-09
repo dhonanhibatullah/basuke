@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 
-	portsoutlog "github.com/dhonanhibatullah/basuke/internal/ports/out/log"
+	portsoutlog "github.com/dhonanhibatullah/basuke/backend/internal/ports/out/log"
 )
 
 type Log struct {
